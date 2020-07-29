@@ -1,0 +1,2518 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{CFR\_County\_Visulazations}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{\texorpdfstring{\textbf{COVID County Data Pull from NYT: July
+6,
+2020}}{COVID County Data Pull from NYT: July 6, 2020}}\label{covid-county-data-pull-from-nyt-july-6-2020}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{c+c1}{\PYZsh{}read in csv from NYT}
+\PY{n}{covcounty61420df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}\PYZsh{}path\PYZsh{}\PYZsh{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fips}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb}{str}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZsh{}create case fatality rate variable \PYZam{} insert new column into df}
+\PY{n}{cfr} \PY{o}{=} \PY{n}{covcounty61420df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{deaths}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{covcounty61420df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{covcounty61420df}\PY{o}{.}\PY{n}{insert}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CFR(}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{cfr}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}filter by county descending by name and date}
+\PY{n}{covcounty61420df} \PY{o}{=} \PY{n}{covcounty61420df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by} \PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{county}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}how many unique counties are there in this df}
+\PY{n}{covcounty61420df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{county}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+1815
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty61420df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+3060
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty61420df}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(301004, 7)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}remove counties outside of 0.1\PYZhy{}99.9\PYZpc{} cfr}
+\PY{n}{covcountydf} \PY{o}{=} \PY{n}{covcounty61420df}\PY{p}{[}\PY{p}{(}\PY{n}{covcounty61420df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mf}{0.1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{covcounty61420df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZlt{}}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{]}
+\PY{n}{covcountydf} \PY{o}{=} \PY{n}{covcountydf}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by} \PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{county}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{covcountydf}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+             date  county      state   fips  cases     CFR(\%)  deaths
+14655  2020-03-27  Acadia  Louisiana  22001      8  12.500000       1
+16473  2020-03-28  Acadia  Louisiana  22001      9  11.111111       1
+18385  2020-03-29  Acadia  Louisiana  22001      9  11.111111       1
+20401  2020-03-30  Acadia  Louisiana  22001     11   9.090909       1
+22508  2020-03-31  Acadia  Louisiana  22001     39   2.564103       1
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcountydf}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases         CFR(\%)         deaths
+count  152637.000000  152637.000000  152637.000000
+mean      933.635514       5.980398      51.354285
+std      5667.645055       6.139799     497.815756
+min         2.000000       0.100402       1.000000
+25\%        42.000000       2.307692       1.000000
+50\%       124.000000       4.320988       4.000000
+75\%       416.000000       7.575758      16.000000
+max    221637.000000      98.181818   22661.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{March
+Data}}{March Data}}\label{march-data}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}obtain cfr dataset for counties on Mar 31, 2020}
+\PY{n}{filt} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2020\PYZhy{}03\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{covcounty331df} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+\PY{n}{covcounty331df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+             date   county           state   fips  cases    CFR(\%)  deaths
+22508  2020-03-31   Acadia       Louisiana  22001     39  2.564103       1
+22177  2020-03-31      Ada           Idaho  16001    195  1.538462       3
+21912  2020-03-31    Adams        Colorado  08001    185  1.081081       2
+23356  2020-03-31    Aiken  South Carolina  45003     13  7.692308       1
+21862  2020-03-31  Alameda      California  06001    334  2.095808       7
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty331df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              cases      CFR(\%)       deaths
+count    496.000000  496.000000   496.000000
+mean     339.149194    7.114583     8.064516
+std     2097.618427    9.602174    67.208374
+min        2.000000    0.192308     1.000000
+25\%       18.000000    1.861927     1.000000
+50\%       55.500000    3.508772     2.000000
+75\%      176.750000    7.692308     4.000000
+max    43518.000000   54.545455  1475.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty331df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+55.5
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Map of US Counties by CFR
+March}}{Map of US Counties by CFR March}}\label{map-of-us-counties-by-cfr-march}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create map of all unique US Counties with available data for March 31, 2020}
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{covcounty331df}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_13_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Sort Top March Counties by CFR(\PYZpc{})}
+\PY{n}{topcovcounty331df} \PY{o}{=} \PY{n}{covcounty331df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by} \PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{filt} \PY{o}{=} \PY{n}{topcovcounty331df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mi}{56}
+\PY{n}{topcovcounty331df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}                                        
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+             date                county         state   fips  cases  \textbackslash{}
+22553  2020-03-31  St. John the Baptist     Louisiana  22095    104
+23353  2020-03-31               Unknown  Rhode Island    NaN     72
+23222  2020-03-31             Cleveland      Oklahoma  40027     65
+22550  2020-03-31           St. Charles     Louisiana  22089     71
+22108  2020-03-31                   Lee       Georgia  13177     90
+
+          CFR(\%)  deaths
+22553  11.538462      12
+23353  11.111111       8
+23222   9.230769       6
+22550   8.450704       6
+22108   7.777778       7
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topcovcounty331df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              cases      CFR(\%)       deaths
+count    244.000000  244.000000   244.000000
+mean     666.090164    2.368787    14.885246
+std     2958.286153    1.744595    95.437713
+min       57.000000    0.192308     1.000000
+25\%      101.750000    1.098901     2.000000
+50\%      184.000000    1.874282     3.500000
+75\%      388.250000    3.091796     8.000000
+max    43518.000000   11.538462  1475.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Map of US Counties Cases
+\textgreater{} Median by CFR
+March}}{Map of US Counties Cases \textgreater{} Median by CFR March}}\label{map-of-us-counties-cases-median-by-cfr-march}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topmardf} \PY{o}{=} \PY{n}{topcovcounty331df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{topmardf}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_17_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}print top march csv counties}
+\PY{c+c1}{\PYZsh{}topmardf.to\PYZus{}csv(\PYZsq{}topmarchco.csv\PYZsq{})}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{\texorpdfstring{\textbf{April
+Data}}{April Data}}\label{april-data}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}obtain cfr dataset for counties on April 30, 2020}
+\PY{n}{filt} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2020\PYZhy{}04\PYZhy{}30}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{covcounty430df} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+\PY{n}{covcounty430df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date    county      state   fips  cases     CFR(\%)  deaths
+101968  2020-04-30    Acadia  Louisiana  22001    130   7.692308      10
+103487  2020-04-30  Accomack   Virginia  51001    264   1.515152       4
+101467  2020-04-30       Ada      Idaho  16001    681   2.349486      16
+102876  2020-04-30     Adair   Oklahoma  40001     64   4.687500       3
+101855  2020-04-30     Adair   Kentucky  21001     81  12.345679      10
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty430df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases       CFR(\%)        deaths
+count    1453.000000  1453.000000   1453.000000
+mean      722.664831     6.789486     43.395045
+std      5118.795683     6.301989    484.414543
+min         2.000000     0.134771      1.000000
+25\%        30.000000     3.030303      1.000000
+50\%        88.000000     5.000000      3.000000
+75\%       285.000000     8.333333     13.000000
+max    172784.000000    66.666667  17809.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty430df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+88.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create map of all unique US Counties with available data for April 30, 2020}
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{covcounty430df}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}sort top April Counties by CFR(\PYZpc{})}
+\PY{n}{topcovcounty430df} \PY{o}{=} \PY{n}{covcounty430df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by} \PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{filt} \PY{o}{=} \PY{n}{topcovcounty430df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mi}{88}
+\PY{n}{topcovcounty430df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}        
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date      county      state   fips  cases     CFR(\%)  deaths
+102024  2020-04-30     Unknown  Louisiana    NaN    104  41.346154      43
+102016  2020-04-30  St. Landry  Louisiana  22097    180  23.333333      42
+102872  2020-04-30       Wayne       Ohio  39169    128  21.875000      28
+102842  2020-04-30       Miami       Ohio  39109    139  19.424460      27
+102789  2020-04-30       Allen       Ohio  39003    121  19.008264      23
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topcovcounty430df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases      CFR(\%)        deaths
+count     724.000000  724.000000    724.000000
+mean     1414.983425    4.934874     84.856354
+std      7187.794596    3.676884    683.978487
+min        89.000000    0.134771      1.000000
+25\%       150.000000    2.340114      5.750000
+50\%       285.000000    4.226107     12.500000
+75\%       728.250000    6.666667     33.250000
+max    172784.000000   41.346154  17809.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Map of US Counties Cases
+\textgreater{} Median by CFR
+April}}{Map of US Counties Cases \textgreater{} Median by CFR April}}\label{map-of-us-counties-cases-median-by-cfr-april}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topaprildf} \PY{o}{=} \PY{n}{topcovcounty430df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{topaprildf}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_27_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{\texorpdfstring{\textbf{May
+Data}}{May Data}}\label{may-data}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}obtain cfr dataset for May 31, 2020}
+\PY{n}{filt} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2020\PYZhy{}05\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{covcounty531df} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+\PY{n}{covcounty531df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date    county      state   fips  cases     CFR(\%)  deaths
+192700  2020-05-31    Acadia  Louisiana  22001    418   5.502392      23
+194298  2020-05-31  Accomack   Virginia  51001    909   1.320132      12
+192166  2020-05-31       Ada      Idaho  16001    812   2.709360      22
+193648  2020-05-31     Adair   Oklahoma  40001     87   3.448276       3
+192582  2020-05-31     Adair   Kentucky  21001     97  19.587629      19
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty531df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases       CFR(\%)        deaths
+count    1755.000000  1755.000000   1755.000000
+mean     1007.087179     5.828488     59.441595
+std      6033.471561     5.327465    538.954509
+min         2.000000     0.115075      1.000000
+25\%        48.000000     2.439024      2.000000
+50\%       144.000000     4.394216      5.000000
+75\%       463.500000     7.692308     21.000000
+max    208085.000000    55.555556  21050.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty531df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+144.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create map of all unique US Counties with available data for May 31, 2020 }
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{covcounty531df}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}sort top May Counties by CFR(\PYZpc{})}
+\PY{n}{topcovcounty531df} \PY{o}{=} \PY{n}{covcounty531df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by} \PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{filt} \PY{o}{=} \PY{n}{topcovcounty531df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mi}{144}
+\PY{n}{topcovcounty531df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}        
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date            county      state   fips  cases     CFR(\%)  \textbackslash{}
+192756  2020-05-31           Unknown  Louisiana    NaN    189  55.555556
+192748  2020-05-31        St. Landry  Louisiana  22097    257  21.011673
+193644  2020-05-31             Wayne       Ohio  39169    274  18.248175
+192761  2020-05-31  West Baton Rouge  Louisiana  22121    166  18.072289
+193626  2020-05-31           Portage       Ohio  39133    325  17.538462
+
+        deaths
+192756     105
+192748      54
+193644      50
+192761      30
+193626      57
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topcovcounty531df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)} 
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases      CFR(\%)        deaths
+count     876.000000  876.000000    876.000000
+mean     1960.728311    4.862482    116.043379
+std      8435.207303    3.923903    758.852248
+min       145.000000    0.115075      1.000000
+25\%       247.750000    1.964398      7.000000
+50\%       465.000000    4.086411     21.000000
+75\%      1191.500000    6.820953     50.000000
+max    208085.000000   55.555556  21050.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Map of US Counties Cases
+\textgreater{} Median by CFR
+May}}{Map of US Counties Cases \textgreater{} Median by CFR May}}\label{map-of-us-counties-cases-median-by-cfr-may}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topmaydf} \PY{o}{=} \PY{n}{topcovcounty531df}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{topmaydf}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_36_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{\texorpdfstring{\textbf{June
+Data}}{June Data}}\label{june-data}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}obtain cfr dataset for June 30, 2020}
+\PY{n}{filt} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2020\PYZhy{}06\PYZhy{}30}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{covcounty614df} \PY{o}{=} \PY{n}{covcountydf}\PY{p}{[}\PY{n}{filt}\PY{p}{]}
+\PY{n}{covcounty614df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date    county      state   fips  cases     CFR(\%)  deaths
+283630  2020-06-30    Acadia  Louisiana  22001    878   4.100228      36
+285284  2020-06-30  Accomack   Virginia  51001   1042   1.343570      14
+283080  2020-06-30       Ada      Idaho  16001   2169   1.060396      23
+284612  2020-06-30     Adair   Oklahoma  40001    115   3.478261       4
+283511  2020-06-30     Adair   Kentucky  21001    120  15.833333      19
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty614df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases       CFR(\%)        deaths
+count    1951.000000  1951.000000   1951.000000
+mean     1337.067145     4.610401     65.304459
+std      6703.407039     5.005200    557.446809
+min         2.000000     0.140449      1.000000
+25\%        77.000000     1.541432      2.000000
+50\%       228.000000     3.157895      6.000000
+75\%       690.000000     6.250000     24.000000
+max    219844.000000    98.181818  22566.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty614df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+228.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create map of all unique US Counties with available data for June 14, 2020}
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{covcounty614df}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_41_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{\texorpdfstring{\textbf{Top June Counties by Case
+Fatality
+Rate}}{Top June Counties by Case Fatality Rate}}\label{top-june-counties-by-case-fatality-rate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}sort top June Counties by CFR(\PYZpc{})}
+\PY{n}{topcovcounty614df} \PY{o}{=} \PY{n}{covcounty614df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by} \PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{filthi} \PY{o}{=} \PY{n}{topcovcounty614df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cases}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mi}{228}
+\PY{n}{topcovcounty614df}\PY{p}{[}\PY{n}{filthi}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}   
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date    county          state   fips  cases     CFR(\%)  deaths
+283210  2020-06-30   Unknown       Illinois    NaN   1053  19.088319     201
+284280  2020-06-30    Sussex     New Jersey  34037   1229  15.541090     191
+283742  2020-06-30  Franklin  Massachusetts  25011    366  14.754098      54
+284608  2020-06-30     Wayne           Ohio  39169    353  14.730878      52
+284349  2020-06-30   Orleans       New York  36073    281  14.590747      41
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topcovcounty614df}\PY{p}{[}\PY{n}{filthi}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}  
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases      CFR(\%)        deaths
+count     974.000000  974.000000    974.000000
+mean     2589.655031    3.733962    126.788501
+std      9322.894804    3.176003    784.334303
+min       229.000000    0.140449      1.000000
+25\%       371.250000    1.320787      7.000000
+50\%       692.000000    2.627437     22.000000
+75\%      1830.500000    5.345227     58.000000
+max    219844.000000   19.088319  22566.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Map of US Counties Cases
+\textgreater{} Median by CFR
+June}}{Map of US Counties Cases \textgreater{} Median by CFR June}}\label{map-of-us-counties-cases-median-by-cfr-june}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topjundf} \PY{o}{=} \PY{n}{topcovcounty614df}\PY{p}{[}\PY{n}{filthi}\PY{p}{]}
+
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k}{import} \PY{n}{urlopen}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k}{with} \PY{n}{urlopen}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/plotly/datasets/master/geojson\PYZhy{}counties\PYZhy{}fips.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{response}\PY{p}{:}
+    \PY{n}{counties} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{response}\PY{p}{)}
+\PY{n}{fig} \PY{o}{=} \PY{n}{px}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}\PY{n}{topjundf}\PY{p}{,} \PY{n}{geojson}\PY{o}{=}\PY{n}{counties}\PY{p}{,} \PY{n}{locations}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{color\PYZus{}continuous\PYZus{}scale}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{range\PYZus{}color}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{scope}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usa}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                           \PY{n}{labels}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cfr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+                          \PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}\PY{n}{margin}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{CFR_County_Visulazations_files/CFR_County_Visulazations_46_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{\texorpdfstring{\textbf{Top June Case County Demographic
+Data}}{Top June Case County Demographic Data}}\label{top-june-case-county-demographic-data}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty614df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              date    county      state   fips  cases     CFR(\%)  deaths
+283630  2020-06-30    Acadia  Louisiana  22001    878   4.100228      36
+285284  2020-06-30  Accomack   Virginia  51001   1042   1.343570      14
+283080  2020-06-30       Ada      Idaho  16001   2169   1.060396      23
+284612  2020-06-30     Adair   Oklahoma  40001    115   3.478261       4
+283511  2020-06-30     Adair   Kentucky  21001    120  15.833333      19
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty614df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               cases       CFR(\%)        deaths
+count    1951.000000  1951.000000   1951.000000
+mean     1337.067145     4.610401     65.304459
+std      6703.407039     5.005200    557.446809
+min         2.000000     0.140449      1.000000
+25\%        77.000000     1.541432      2.000000
+50\%       228.000000     3.157895      6.000000
+75\%       690.000000     6.250000     24.000000
+max    219844.000000    98.181818  22566.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{covcounty614df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+3.1578947368421053
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}filter covid county data from June 30, 2020 by Median CFR (breakpoint of 4)}
+\PY{n}{filthi} \PY{o}{=} \PY{n}{covcounty614df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mf}{6.25}
+\PY{n}{filtlo} \PY{o}{=} \PY{n}{covcounty614df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZlt{}}\PY{l+m+mf}{6.25}
+\PY{n}{junehicountydf} \PY{o}{=} \PY{n}{covcounty614df}\PY{p}{[}\PY{n}{filthi}\PY{p}{]}
+\PY{n}{junelocountydf} \PY{o}{=} \PY{n}{covcounty614df}\PY{p}{[}\PY{n}{filtlo}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Merge census data to high and low June COVID County data with previously combined census county demographics and economic data}
+
+\PY{c+c1}{\PYZsh{}read in county ethnic demographics from US Census \PYZhy{} 5 Year Data}
+\PY{n}{demographicdf}  \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}\PYZsh{}path\PYZsh{}\PYZsh{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{engine}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{pd}\PY{o}{.}\PY{n}{set\PYZus{}option}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{display.max\PYZus{}columns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{85}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{demographicdf}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total Population 25 years and over\PYZhy{} Bachelor}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Num College Grads}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{demographicdf}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   Unnamed: 0        GEO\_ID\_x                   NAME\_x  \textbackslash{}
+0           0  0500000US01001  Autauga County, Alabama
+1           1  0500000US01003  Baldwin County, Alabama
+2           2  0500000US01005  Barbour County, Alabama
+3           3  0500000US01007     Bibb County, Alabama
+4           4  0500000US01009   Blount County, Alabama
+
+   Total Population for whom poverty status is determined  \textbackslash{}
+0                                            54765.0
+1                                           204929.0
+2                                            22856.0
+3                                            20468.0
+4                                            57082.0
+
+   Margin of Error- Total Population for whom poverty status is determined  \textbackslash{}
+0                                              147.0
+1                                              494.0
+2                                              277.0
+3                                              201.0
+4                                              150.0
+
+   Population Below Poverty Level  \textbackslash{}
+0                          8422.0
+1                         21653.0
+2                          6597.0
+3                          2863.0
+4                          8220.0
+
+   Margin of Error- Population Below Poverty Level  \textbackslash{}
+0                                           1137.0
+1                                           1765.0
+2                                            661.0
+3                                            770.0
+4                                            992.0
+
+   Percent Below Poverty Level  Margin of Error- Percent Below Poverty Level  \textbackslash{}
+0                         15.4                                           2.1
+1                         10.6                                           0.9
+2                         28.9                                           2.9
+3                         14.0                                           3.8
+4                         14.4                                           1.7
+
+   Total Population 16 years and over  \textbackslash{}
+0                             43368.0
+1                            167712.0
+2                             20948.0
+3                             18470.0
+4                             45915.0
+
+   Margin of Error- Total Population 16 years and over  \textbackslash{}
+0                                              203.0
+1                                              321.0
+2                                               82.0
+3                                              132.0
+4                                              159.0
+
+   Unemployment Rate- 16 years and over  \textbackslash{}
+0                                   4.2
+1                                   4.4
+2                                   9.5
+3                                   7.5
+4                                   4.1
+
+   Margin of Error- Unemployment Rate- 16 years and over  \textbackslash{}
+0                                                1.0
+1                                                0.6
+2                                                2.0
+3                                                2.5
+4                                                0.8
+
+   Total Population 16 years and over.1  \textbackslash{}
+0                               43368.0
+1                              167712.0
+2                               20948.0
+3                               18470.0
+4                               45915.0
+
+   Margin of Error- Total Population 16 years and over.1  \textbackslash{}
+0                                              203.0
+1                                              321.0
+2                                               82.0
+3                                              132.0
+4                                              159.0
+
+   Unemployment Rate- 16 years and over.1  \textbackslash{}
+0                                     4.2
+1                                     4.4
+2                                     9.5
+3                                     7.5
+4                                     4.1
+
+   Margin of Error- Unemployment Rate- 16 years and over.1  \textbackslash{}
+0                                                1.0
+1                                                0.6
+2                                                2.0
+3                                                2.5
+4                                                0.8
+
+   Total Population 16 years and over.2  \textbackslash{}
+0                               43368.0
+1                              167712.0
+2                               20948.0
+3                               18470.0
+4                               45915.0
+
+   Margin of Error- Total Population 16 years and over.2  \textbackslash{}
+0                                              203.0
+1                                              321.0
+2                                               82.0
+3                                              132.0
+4                                              159.0
+
+   Unemployment Rate- 16 years and over.2  \textbackslash{}
+0                                     4.2
+1                                     4.4
+2                                     9.5
+3                                     7.5
+4                                     4.1
+
+   Margin of Error- Unemployment Rate- 16 years and over.2  \textbackslash{}
+0                                                1.0
+1                                                0.6
+2                                                2.0
+3                                                2.5
+4                                                0.8
+
+   Household Median Income  Margin of Error- Household Median Income  \textbackslash{}
+0                  58786.0                                    2972.0
+1                  55962.0                                    1204.0
+2                  34186.0                                    2552.0
+3                  45340.0                                    5618.0
+4                  48695.0                                    2703.0
+
+   Total Population 25 years and over- High school graduates  \textbackslash{}
+0                                              12119
+1                                              40579
+2                                               6486
+3                                               7471
+4                                              13489
+
+   Margin of error- Total Population 25 years and over- High school graduates  \textbackslash{}
+0                                                696
+1                                               1685
+2                                                402
+3                                                541
+4                                                516
+
+   Num College Grads  \textbackslash{}
+0               5903
+1              30431
+2               1417
+3               1197
+4               3217
+
+   Margin of error- Total Population 25 years and over- Bachelor's degree  \textbackslash{}
+0                                                611
+1                                               1278
+2                                                208
+3                                                372
+4                                                380
+
+     fips        GEO\_ID\_y                   NAME\_y  Estimate- Total  \textbackslash{}
+0  1001.0  0500000US01001  Autauga County, Alabama            55200
+1  1003.0  0500000US01003  Baldwin County, Alabama           208107
+2  1005.0  0500000US01005  Barbour County, Alabama            25782
+3  1007.0  0500000US01007     Bibb County, Alabama            22527
+4  1009.0  0500000US01009   Blount County, Alabama            57645
+
+  Margin of Error- Total  Estimate- Total- White alone  \textbackslash{}
+0                  *****                         42437
+1                  *****                        179526
+2                  *****                         12216
+3                  *****                         17268
+4                  *****                         55054
+
+   Margin of Error- Total- White alone  \textbackslash{}
+0                                  337
+1                                  747
+2                                  179
+3                                   70
+4                                  265
+
+   Estimate- Total- Black or African American alone  \textbackslash{}
+0                                             10565
+1                                             19764
+2                                             12266
+3                                              5018
+4                                               862
+
+   Margin of Error- Total- Black or African American alone  \textbackslash{}
+0                                                230
+1                                                377
+2                                                196
+3                                                112
+4                                                169
+
+   Estimate- Total- American Indian and Alaska Native alone  \textbackslash{}
+0                                                159
+1                                               1522
+2                                                 72
+3                                                  8
+4                                                141
+
+   Margin of Error- Total- American Indian and Alaska Native alone  \textbackslash{}
+0                                                 68
+1                                                337
+2                                                 43
+3                                                 16
+4                                                 73
+
+   Estimate- Total- Asian alone  Margin of Error- Total- Asian alone  \textbackslash{}
+0                           568                                  166
+1                          1680                                  360
+2                            96                                   40
+3                            37                                   54
+4                           198                                   33
+
+   Estimate- Total- Native Hawaiian and Other Pacific Islander alone  \textbackslash{}
+0                                                 32
+1                                                  9
+2                                                  1
+3                                                  0
+4                                                 18
+
+   Margin of Error- Total- Native Hawaiian and Other Pacific Islander alone  \textbackslash{}
+0                                                 36
+1                                                 13
+2                                                  3
+3                                                 22
+4                                                 32
+
+   Estimate- Total- Two or more races  \textbackslash{}
+0                                1030
+1                                3572
+2                                 353
+3                                 187
+4                                 935
+
+   Margin of Error- Total- Two or more races  \textbackslash{}
+0                                        250
+1                                        671
+2                                        161
+3                                         90
+4                                        193
+
+   Estimate- Total- Two or more races- Two races including Some other race  \textbackslash{}
+0                                                 18
+1                                                603
+2                                                 22
+3                                                  0
+4                                                 31
+
+   Margin of Error- Total- Two or more races- Two races including Some other
+race  \textbackslash{}
+0                                                 29
+1                                                403
+2                                                 23
+3                                                 22
+4                                                 43
+
+   Estimate- Total- Two or more races- Two races excluding Some other race, and
+three or more races  \textbackslash{}
+0                                               1012
+1                                               2969
+2                                                331
+3                                                187
+4                                                904
+
+   Margin of Error- Total- Two or more races!!Two races excluding Some other
+race, and three or more races
+0                                                251
+1                                                659
+2                                                162
+3                                                 90
+4                                                181
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{demographicdf}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}demographicdf.isnull().sum()}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}read in data about older population inhabitants}
+\PY{n}{agesdf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}\PYZsh{}path\PYZsh{}\PYZsh{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{engine}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create new df with only Geo ID and population \PYZgt{}62 years}
+\PY{n}{over62df} \PY{o}{=} \PY{n}{agesdf}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GEO\PYZus{}ID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total Population 62 Years and over}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{over62df}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}over62df.to\PYZus{}csv(\PYZsq{}over62.csv\PYZsq{}) \PYZhy{} note, needed to find atypical characters and impute median value (5700)}
+\PY{n}{over62df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}\PYZsh{}path\PYZsh{}\PYZsh{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{engine}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}over62df[\PYZsq{}Total Population 62 Years and over\PYZsq{}]= over62df[\PYZsq{}Total Population 62 Years and over\PYZsq{}].astype(float)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create fips from Geo ID}
+\PY{n}{splitfipsdf} \PY{o}{=} \PY{n}{over62df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GEO\PYZus{}ID}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{S}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{expand}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{over62df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fips}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{splitfipsdf}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{over62df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=} \PY{n}{over62df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{float}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}merge demographic info with High CFR June Counties on fips}
+\PY{n}{junehicountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{junehicountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{float}\PY{p}{)}
+\PY{n}{junhidf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{junehicountydf}\PY{p}{,} \PY{n}{demographicdf}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{junhidf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{junhidf}\PY{p}{,} \PY{n}{over62df}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{pd}\PY{o}{.}\PY{n}{set\PYZus{}option}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{display.max\PYZus{}columns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{85}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}mergecensusdf.to\PYZus{}csv(\PYZsq{}mergecensus.csv\PYZsq{})}
+\PY{n}{junhidf}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{\texorpdfstring{\textbf{Descriptive Statistics for June US
+Counties with a CFR\% \textgreater{}=
+6.25}}{Descriptive Statistics for June US Counties with a CFR\% \textgreater{}= 6.25}}\label{descriptive-statistics-for-june-us-counties-with-a-cfr-6.25}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{junhidf}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               fips         cases      CFR(\%)       deaths  Unnamed: 0\_x  \textbackslash{}
+count    497.000000    497.000000  497.000000   497.000000    497.000000
+mean   29629.537223   1236.967807   10.308380   105.452716   1513.088531
+std    12868.312146   3698.375852    5.215824   309.507085    786.760090
+min     1019.000000      2.000000    6.250000     1.000000      9.000000
+25\%    19113.000000     39.000000    7.142857     3.000000    845.000000
+50\%    28015.000000    144.000000    8.695652    15.000000   1408.000000
+75\%    39151.000000    480.000000   11.576923    43.000000   2118.000000
+max    56043.000000  41807.000000   50.000000  2722.000000   3140.000000
+
+       Total Population for whom poverty status is determined  \textbackslash{}
+count                                       4.970000e+02
+mean                                        1.175912e+05
+std                                         2.262355e+05
+min                                         1.053000e+03
+25\%                                         1.491400e+04
+50\%                                         3.242000e+04
+75\%                                         9.586400e+04
+max                                         1.740233e+06
+
+       Margin of Error- Total Population for whom poverty status is determined
+\textbackslash{}
+count                                         497.000000
+mean                                          304.881288
+std                                           292.979301
+min                                             8.000000
+25\%                                           117.000000
+50\%                                           208.000000
+75\%                                           375.000000
+max                                          2223.000000
+
+       Population Below Poverty Level  \textbackslash{}
+count                      497.000000
+mean                     14570.114688
+std                      29438.173851
+min                        182.000000
+25\%                       2377.000000
+50\%                       4811.000000
+75\%                      11500.000000
+max                     401149.000000
+
+       Margin of Error- Population Below Poverty Level  \textbackslash{}
+count                                       497.000000
+mean                                        939.780684
+std                                         847.735747
+min                                          56.000000
+25\%                                         406.000000
+50\%                                         654.000000
+75\%                                        1137.000000
+max                                        6740.000000
+
+       Percent Below Poverty Level  \textbackslash{}
+count                   497.000000
+mean                     15.550302
+std                       6.673359
+min                       2.700000
+25\%                      10.800000
+50\%                      14.500000
+75\%                      19.000000
+max                      47.700000
+
+       Margin of Error- Percent Below Poverty Level  \textbackslash{}
+count                                    497.000000
+mean                                       2.140845
+std                                        1.464927
+min                                        0.200000
+25\%                                        1.100000
+50\%                                        1.800000
+75\%                                        3.000000
+max                                       10.700000
+
+       Total Population 16 years and over  \textbackslash{}
+count                        4.970000e+02
+mean                         9.762128e+04
+std                          1.866879e+05
+min                          1.137000e+03
+25\%                          1.272700e+04
+50\%                          2.629600e+04
+75\%                          7.929800e+04
+max                          1.389038e+06
+
+       Margin of Error- Total Population 16 years and over  \textbackslash{}
+count                                         497.000000
+mean                                          170.889336
+std                                           140.850863
+min                                            19.000000
+25\%                                            79.000000
+50\%                                           122.000000
+75\%                                           209.000000
+max                                           850.000000
+
+       Unemployment Rate- 16 years and over  \textbackslash{}
+count                            497.000000
+mean                               5.999396
+std                                2.557898
+min                                0.000000
+25\%                                4.400000
+50\%                                5.700000
+75\%                                7.100000
+max                               23.300000
+
+       Margin of Error- Unemployment Rate- 16 years and over  \textbackslash{}
+count                                         497.000000
+mean                                            1.354728
+std                                             1.022914
+min                                             0.200000
+25\%                                             0.700000
+50\%                                             1.100000
+75\%                                             1.800000
+max                                             7.500000
+
+       Total Population 16 years and over.1  \textbackslash{}
+count                          4.970000e+02
+mean                           9.762128e+04
+std                            1.866879e+05
+min                            1.137000e+03
+25\%                            1.272700e+04
+50\%                            2.629600e+04
+75\%                            7.929800e+04
+max                            1.389038e+06
+
+       Margin of Error- Total Population 16 years and over.1  \textbackslash{}
+count                                         497.000000
+mean                                          170.889336
+std                                           140.850863
+min                                            19.000000
+25\%                                            79.000000
+50\%                                           122.000000
+75\%                                           209.000000
+max                                           850.000000
+
+       Unemployment Rate- 16 years and over.1  \textbackslash{}
+count                              497.000000
+mean                                 5.999396
+std                                  2.557898
+min                                  0.000000
+25\%                                  4.400000
+50\%                                  5.700000
+75\%                                  7.100000
+max                                 23.300000
+
+       Margin of Error- Unemployment Rate- 16 years and over.1  \textbackslash{}
+count                                         497.000000
+mean                                            1.354728
+std                                             1.022914
+min                                             0.200000
+25\%                                             0.700000
+50\%                                             1.100000
+75\%                                             1.800000
+max                                             7.500000
+
+       Total Population 16 years and over.2  \textbackslash{}
+count                          4.970000e+02
+mean                           9.762128e+04
+std                            1.866879e+05
+min                            1.137000e+03
+25\%                            1.272700e+04
+50\%                            2.629600e+04
+75\%                            7.929800e+04
+max                            1.389038e+06
+
+       Margin of Error- Total Population 16 years and over.2  \textbackslash{}
+count                                         497.000000
+mean                                          170.889336
+std                                           140.850863
+min                                            19.000000
+25\%                                            79.000000
+50\%                                           122.000000
+75\%                                           209.000000
+max                                           850.000000
+
+       Unemployment Rate- 16 years and over.2  \textbackslash{}
+count                              497.000000
+mean                                 5.999396
+std                                  2.557898
+min                                  0.000000
+25\%                                  4.400000
+50\%                                  5.700000
+75\%                                  7.100000
+max                                 23.300000
+
+       Margin of Error- Unemployment Rate- 16 years and over.2  \textbackslash{}
+count                                         497.000000
+mean                                            1.354728
+std                                             1.022914
+min                                             0.200000
+25\%                                             0.700000
+50\%                                             1.100000
+75\%                                             1.800000
+max                                             7.500000
+
+       Household Median Income  Margin of Error- Household Median Income  \textbackslash{}
+count               497.000000                                497.000000
+mean              52982.665996                               2795.064386
+std               15809.557828                               1738.428619
+min               21093.000000                                376.000000
+25\%               42480.000000                               1580.000000
+50\%               50761.000000                               2366.000000
+75\%               59045.000000                               3617.000000
+max              124796.000000                              15295.000000
+
+       Total Population 25 years and over- High school graduates  \textbackslash{}
+count                                         497.000000
+mean                                        24008.887324
+std                                         40751.730244
+min                                           340.000000
+25\%                                          4198.000000
+50\%                                          8473.000000
+75\%                                         22068.000000
+max                                        353763.000000
+
+       Margin of error- Total Population 25 years and over- High school
+graduates  \textbackslash{}
+count                                         497.000000
+mean                                          700.694165
+std                                           631.564905
+min                                            64.000000
+25\%                                           299.000000
+50\%                                           473.000000
+75\%                                           870.000000
+max                                          3289.000000
+
+       Num College Grads  \textbackslash{}
+count         497.000000
+mean        16850.917505
+std         38256.386281
+min            29.000000
+25\%          1093.000000
+50\%          2760.000000
+75\%         10687.000000
+max        303611.000000
+
+       Margin of error- Total Population 25 years and over- Bachelor's degree  \textbackslash{}
+count                                         497.000000
+mean                                          537.032193
+std                                           580.853983
+min                                            30.000000
+25\%                                           170.000000
+50\%                                           311.000000
+75\%                                           645.000000
+max                                          3634.000000
+
+       Estimate- Total  Estimate- Total- White alone  \textbackslash{}
+count     4.970000e+02                  4.970000e+02
+mean      1.206721e+05                  9.370341e+04
+std       2.310442e+05                  1.682904e+05
+min       1.328000e+03                  5.210000e+02
+25\%       1.528600e+04                  1.178300e+04
+50\%       3.323100e+04                  2.763700e+04
+75\%       9.821400e+04                  8.696400e+04
+max       1.761382e+06                  1.233271e+06
+
+       Margin of Error- Total- White alone  \textbackslash{}
+count                           497.000000
+mean                            382.259557
+std                             591.780582
+min                              10.000000
+25\%                              83.000000
+50\%                             172.000000
+75\%                             389.000000
+max                            3697.000000
+
+       Estimate- Total- Black or African American alone  \textbackslash{}
+count                                        497.000000
+mean                                       14496.372233
+std                                        45623.848891
+min                                            0.000000
+25\%                                          231.000000
+50\%                                         1754.000000
+75\%                                         8588.000000
+max                                       685098.000000
+
+       Margin of Error- Total- Black or African American alone  \textbackslash{}
+count                                         497.000000
+mean                                          276.579477
+std                                           348.077650
+min                                             2.000000
+25\%                                            63.000000
+50\%                                           143.000000
+75\%                                           314.000000
+max                                          1877.000000
+
+       Estimate- Total- American Indian and Alaska Native alone  \textbackslash{}
+count                                         497.000000
+mean                                          707.167002
+std                                          2637.395277
+min                                             0.000000
+25\%                                            34.000000
+50\%                                           135.000000
+75\%                                           447.000000
+max                                         50524.000000
+
+       Margin of Error- Total- American Indian and Alaska Native alone  \textbackslash{}
+count                                         497.000000
+mean                                          118.114688
+std                                           140.259814
+min                                             2.000000
+25\%                                            30.000000
+50\%                                            64.000000
+75\%                                           147.000000
+max                                           931.000000
+
+       Estimate- Total- Asian alone  Margin of Error- Total- Asian alone  \textbackslash{}
+count                    497.000000                           497.000000
+mean                    5204.030181                           144.873239
+std                    18778.708582                           202.949466
+min                        0.000000                             2.000000
+25\%                       57.000000                            30.000000
+50\%                      206.000000                            64.000000
+75\%                     1191.000000                           166.000000
+max                   197711.000000                          1372.000000
+
+       Estimate- Total- Native Hawaiian and Other Pacific Islander alone  \textbackslash{}
+count                                         497.000000
+mean                                           47.052314
+std                                           113.125952
+min                                             0.000000
+25\%                                             0.000000
+50\%                                             7.000000
+75\%                                            37.000000
+max                                          1426.000000
+
+       Margin of Error- Total- Native Hawaiian and Other Pacific Islander alone
+\textbackslash{}
+count                                         497.000000
+mean                                           36.957746
+std                                            42.287898
+min                                             1.000000
+25\%                                            16.000000
+50\%                                            21.000000
+75\%                                            38.000000
+max                                           299.000000
+
+       Estimate- Total- Two or more races  \textbackslash{}
+count                          497.000000
+mean                          3203.026157
+std                           6689.200425
+min                              0.000000
+25\%                            234.000000
+50\%                            605.000000
+75\%                           2346.000000
+max                          45881.000000
+
+       Margin of Error- Total- Two or more races  \textbackslash{}
+count                                 497.000000
+mean                                  347.486922
+std                                   424.844151
+min                                    13.000000
+25\%                                    89.000000
+50\%                                   179.000000
+75\%                                   401.000000
+max                                  2783.000000
+
+       Estimate- Total- Two or more races- Two races including Some other race
+\textbackslash{}
+count                                         497.000000
+mean                                          446.227364
+std                                          1201.511371
+min                                             0.000000
+25\%                                             9.000000
+50\%                                            53.000000
+75\%                                           226.000000
+max                                         11239.000000
+
+       Margin of Error- Total- Two or more races- Two races including Some other
+race  \textbackslash{}
+count                                          497.00000
+mean                                           126.34004
+std                                            191.17204
+min                                              3.00000
+25\%                                             19.00000
+50\%                                             51.00000
+75\%                                            137.00000
+max                                           1441.00000
+
+       Estimate- Total- Two or more races- Two races excluding Some other race,
+and three or more races  \textbackslash{}
+count                                         497.000000
+mean                                         2756.798793
+std                                          5676.636445
+min                                             0.000000
+25\%                                           210.000000
+50\%                                           548.000000
+75\%                                          2137.000000
+max                                         40734.000000
+
+       Margin of Error- Total- Two or more races!!Two races excluding Some other
+race, and three or more races  \textbackslash{}
+count                                         497.000000
+mean                                          320.213280
+std                                           387.532583
+min                                            11.000000
+25\%                                            83.000000
+50\%                                           166.000000
+75\%                                           368.000000
+max                                          2481.000000
+
+       Unnamed: 0\_y  Total Population 62 Years and over
+count    497.000000                          497.000000
+mean    1513.734406                        24800.102616
+std      787.134043                        45203.721118
+min        9.000000                          237.000000
+25\%      845.000000                         3807.000000
+50\%     1409.000000                         7515.000000
+75\%     2119.000000                        21677.000000
+max     3141.000000                       322990.000000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{junhidf}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(497, 57)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}merge demographic info with Low CFR June Counties on fips}
+\PY{n}{junelocountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{junelocountydf}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{float}\PY{p}{)}
+\PY{n}{junlodf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{junelocountydf}\PY{p}{,} \PY{n}{demographicdf}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{junlodf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{junlodf}\PY{p}{,} \PY{n}{over62df}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fips}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{pd}\PY{o}{.}\PY{n}{set\PYZus{}option}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{display.max\PYZus{}columns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{85}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}mergecensusdf.to\PYZus{}csv(\PYZsq{}mergecensus.csv\PYZsq{})}
+\PY{n}{junlodf}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{junlodf}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{\texorpdfstring{\textbf{Descriptive Statistics for June US
+Counties with a CFR\% \textless{}
+6.25}}{Descriptive Statistics for June US Counties with a CFR\% \textless{} 6.25}}\label{descriptive-statistics-for-june-us-counties-with-a-cfr-6.25}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{junlodf}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               fips          cases       CFR(\%)       deaths  Unnamed: 0\_x  \textbackslash{}
+count   1439.000000    1439.000000  1439.000000  1439.000000   1439.000000
+mean   29309.783878    1220.680334     2.570042    36.047950   1505.419736
+std    16087.170567    4791.715696     1.567743   186.587918    957.223165
+min     1001.000000      17.000000     0.140449     1.000000      0.000000
+25\%    16035.000000      86.500000     1.297936     2.000000    568.000000
+50\%    28131.000000     253.000000     2.222222     4.000000   1466.000000
+75\%    45056.000000     736.000000     3.707205    15.000000   2343.500000
+max    56039.000000  103529.000000     6.194690  4565.000000   3138.000000
+
+       Total Population for whom poverty status is determined  \textbackslash{}
+count                                       1.439000e+03
+mean                                        1.591289e+05
+std                                         4.385031e+05
+min                                         1.986000e+03
+25\%                                         2.355300e+04
+50\%                                         4.973000e+04
+75\%                                         1.306970e+05
+max                                         9.947799e+06
+
+       Margin of Error- Total Population for whom poverty status is determined
+\textbackslash{}
+count                                        1439.000000
+mean                                          365.205003
+std                                           349.525502
+min                                             1.000000
+25\%                                           166.000000
+50\%                                           268.000000
+75\%                                           436.500000
+max                                          4278.000000
+
+       Population Below Poverty Level  \textbackslash{}
+count                    1.439000e+03
+mean                     2.253970e+04
+std                      6.666775e+04
+min                      1.650000e+02
+25\%                      3.846500e+03
+50\%                      7.420000e+03
+75\%                      1.763900e+04
+max                      1.589956e+06
+
+       Margin of Error- Population Below Poverty Level  \textbackslash{}
+count                                      1439.000000
+mean                                       1271.618485
+std                                        1231.175428
+min                                          66.000000
+25\%                                         587.500000
+50\%                                         911.000000
+75\%                                        1469.500000
+max                                       15303.000000
+
+       Percent Below Poverty Level  \textbackslash{}
+count                  1439.000000
+mean                     15.968728
+std                       6.330145
+min                       3.500000
+25\%                      11.500000
+50\%                      15.300000
+75\%                      19.400000
+max                      55.100000
+
+       Margin of Error- Percent Below Poverty Level  \textbackslash{}
+count                                   1439.000000
+mean                                       1.963586
+std                                        1.245206
+min                                        0.200000
+25\%                                        1.100000
+50\%                                        1.700000
+75\%                                        2.600000
+max                                       10.100000
+
+       Total Population 16 years and over  \textbackslash{}
+count                        1.439000e+03
+mean                         1.294709e+05
+std                          3.540376e+05
+min                          1.368000e+03
+25\%                          1.993550e+04
+50\%                          4.107400e+04
+75\%                          1.076390e+05
+max                          8.115158e+06
+
+       Margin of Error- Total Population 16 years and over  \textbackslash{}
+count                                        1439.000000
+mean                                          209.376650
+std                                           174.492425
+min                                            21.000000
+25\%                                           107.000000
+50\%                                           158.000000
+75\%                                           251.000000
+max                                          1824.000000
+
+       Unemployment Rate- 16 years and over  \textbackslash{}
+count                           1439.000000
+mean                               6.084086
+std                                2.470902
+min                                0.300000
+25\%                                4.400000
+50\%                                5.700000
+75\%                                7.200000
+max                               18.100000
+
+       Margin of Error- Unemployment Rate- 16 years and over  \textbackslash{}
+count                                        1439.000000
+mean                                            1.228562
+std                                             0.885895
+min                                             0.100000
+25\%                                             0.600000
+50\%                                             1.000000
+75\%                                             1.600000
+max                                             6.800000
+
+       Total Population 16 years and over.1  \textbackslash{}
+count                          1.439000e+03
+mean                           1.294709e+05
+std                            3.540376e+05
+min                            1.368000e+03
+25\%                            1.993550e+04
+50\%                            4.107400e+04
+75\%                            1.076390e+05
+max                            8.115158e+06
+
+       Margin of Error- Total Population 16 years and over.1  \textbackslash{}
+count                                        1439.000000
+mean                                          209.376650
+std                                           174.492425
+min                                            21.000000
+25\%                                           107.000000
+50\%                                           158.000000
+75\%                                           251.000000
+max                                          1824.000000
+
+       Unemployment Rate- 16 years and over.1  \textbackslash{}
+count                             1439.000000
+mean                                 6.084086
+std                                  2.470902
+min                                  0.300000
+25\%                                  4.400000
+50\%                                  5.700000
+75\%                                  7.200000
+max                                 18.100000
+
+       Margin of Error- Unemployment Rate- 16 years and over.1  \textbackslash{}
+count                                        1439.000000
+mean                                            1.228562
+std                                             0.885895
+min                                             0.100000
+25\%                                             0.600000
+50\%                                             1.000000
+75\%                                             1.600000
+max                                             6.800000
+
+       Total Population 16 years and over.2  \textbackslash{}
+count                          1.439000e+03
+mean                           1.294709e+05
+std                            3.540376e+05
+min                            1.368000e+03
+25\%                            1.993550e+04
+50\%                            4.107400e+04
+75\%                            1.076390e+05
+max                            8.115158e+06
+
+       Margin of Error- Total Population 16 years and over.2  \textbackslash{}
+count                                        1439.000000
+mean                                          209.376650
+std                                           174.492425
+min                                            21.000000
+25\%                                           107.000000
+50\%                                           158.000000
+75\%                                           251.000000
+max                                          1824.000000
+
+       Unemployment Rate- 16 years and over.2  \textbackslash{}
+count                             1439.000000
+mean                                 6.084086
+std                                  2.470902
+min                                  0.300000
+25\%                                  4.400000
+50\%                                  5.700000
+75\%                                  7.200000
+max                                 18.100000
+
+       Margin of Error- Unemployment Rate- 16 years and over.2  \textbackslash{}
+count                                        1439.000000
+mean                                            1.228562
+std                                             0.885895
+min                                             0.100000
+25\%                                             0.600000
+50\%                                             1.000000
+75\%                                             1.600000
+max                                             6.800000
+
+       Household Median Income  Margin of Error- Household Median Income  \textbackslash{}
+count              1439.000000                               1439.000000
+mean              53006.840167                               2536.341209
+std               14694.287838                               1465.453003
+min               20188.000000                                247.000000
+25\%               43151.500000                               1540.000000
+50\%               51043.000000                               2189.000000
+75\%               59716.000000                               3143.500000
+max              136268.000000                              10958.000000
+
+       Total Population 25 years and over- High school graduates  \textbackslash{}
+count                                       1.439000e+03
+mean                                        2.858594e+04
+std                                         6.664521e+04
+min                                         4.140000e+02
+25\%                                         6.027500e+03
+50\%                                         1.211900e+04
+75\%                                         2.644600e+04
+max                                         1.416482e+06
+
+       Margin of error- Total Population 25 years and over- High school
+graduates  \textbackslash{}
+count                                        1439.000000
+mean                                          856.606671
+std                                           778.025223
+min                                            52.000000
+25\%                                           428.000000
+50\%                                           619.000000
+75\%                                          1020.000000
+max                                          9780.000000
+
+       Num College Grads  \textbackslash{}
+count       1.439000e+03
+mean        2.150561e+04
+std         6.533190e+04
+min         7.600000e+01
+25\%         1.861500e+03
+50\%         4.525000e+03
+75\%         1.513200e+04
+max         1.416842e+06
+
+       Margin of error- Total Population 25 years and over- Bachelor's degree  \textbackslash{}
+count                                        1439.000000
+mean                                          670.963169
+std                                           720.766028
+min                                            27.000000
+25\%                                           262.000000
+50\%                                           431.000000
+75\%                                           811.000000
+max                                          8651.000000
+
+       Estimate- Total  Estimate- Total- White alone  \textbackslash{}
+count     1.439000e+03                  1.439000e+03
+mean      1.629869e+05                  1.160805e+05
+std       4.453940e+05                  2.716352e+05
+min       2.029000e+03                  2.520000e+02
+25\%       2.492850e+04                  1.986000e+04
+50\%       5.156400e+04                  4.273100e+04
+75\%       1.345425e+05                  1.031175e+05
+max       1.009805e+07                  5.186859e+06
+
+       Margin of Error- Total- White alone  \textbackslash{}
+count                          1439.000000
+mean                            636.379430
+std                            1058.896196
+min                               2.000000
+25\%                             140.000000
+50\%                             315.000000
+75\%                             689.500000
+max                           15793.000000
+
+       Estimate- Total- Black or African American alone  \textbackslash{}
+count                                      1.439000e+03
+mean                                       2.152022e+04
+std                                        7.128638e+04
+min                                        0.000000e+00
+25\%                                        7.180000e+02
+50\%                                        3.590000e+03
+75\%                                        1.226100e+04
+max                                        1.230494e+06
+
+       Margin of Error- Total- Black or African American alone  \textbackslash{}
+count                                        1439.000000
+mean                                          348.760945
+std                                           418.052994
+min                                             4.000000
+25\%                                           109.000000
+50\%                                           207.000000
+75\%                                           402.000000
+max                                          3374.000000
+
+       Estimate- Total- American Indian and Alaska Native alone  \textbackslash{}
+count                                        1439.000000
+mean                                         1322.982627
+std                                          4888.974076
+min                                             0.000000
+25\%                                            71.000000
+50\%                                           218.000000
+75\%                                           767.500000
+max                                         82699.000000
+
+       Margin of Error- Total- American Indian and Alaska Native alone  \textbackslash{}
+count                                        1439.000000
+mean                                          177.403753
+std                                           234.129974
+min                                             3.000000
+25\%                                            49.000000
+50\%                                           101.000000
+75\%                                           207.000000
+max                                          3037.000000
+
+       Estimate- Total- Asian alone  Margin of Error- Total- Asian alone  \textbackslash{}
+count                  1.439000e+03                          1439.000000
+mean                   9.430248e+03                           204.054899
+std                    5.639516e+04                           322.480264
+min                    0.000000e+00                             3.000000
+25\%                    1.270000e+02                            47.500000
+50\%                    4.180000e+02                            95.000000
+75\%                    2.281500e+03                           223.500000
+max                    1.469968e+06                          3742.000000
+
+       Estimate- Total- Native Hawaiian and Other Pacific Islander alone  \textbackslash{}
+count                                        1439.000000
+mean                                          352.423211
+std                                          2915.854756
+min                                             0.000000
+25\%                                             0.000000
+50\%                                            20.000000
+75\%                                            85.000000
+max                                         93947.000000
+
+       Margin of Error- Total- Native Hawaiian and Other Pacific Islander alone
+\textbackslash{}
+count                                        1439.000000
+mean                                           62.086171
+std                                           103.980571
+min                                             1.000000
+25\%                                            19.000000
+50\%                                            28.000000
+75\%                                            61.500000
+max                                          1809.000000
+
+       Estimate- Total- Two or more races  \textbackslash{}
+count                         1439.000000
+mean                          5563.820709
+std                          18319.466491
+min                              0.000000
+25\%                            421.000000
+50\%                           1138.000000
+75\%                           3586.500000
+max                         397680.000000
+
+       Margin of Error- Total- Two or more races  \textbackslash{}
+count                                1439.000000
+mean                                  482.038916
+std                                   621.652050
+min                                     9.000000
+25\%                                   148.500000
+50\%                                   279.000000
+75\%                                   565.000000
+max                                  8047.000000
+
+       Estimate- Total- Two or more races- Two races including Some other race
+\textbackslash{}
+count                                        1439.000000
+mean                                          856.030577
+std                                          4021.415577
+min                                             0.000000
+25\%                                            26.000000
+50\%                                           109.000000
+75\%                                           369.000000
+max                                        113303.000000
+
+       Margin of Error- Total- Two or more races- Two races including Some other
+race  \textbackslash{}
+count                                        1439.000000
+mean                                          180.718555
+std                                           289.401539
+min                                             2.000000
+25\%                                            31.000000
+50\%                                            81.000000
+75\%                                           204.000000
+max                                          3691.000000
+
+       Estimate- Total- Two or more races- Two races excluding Some other race,
+and three or more races  \textbackslash{}
+count                                        1439.000000
+mean                                         4707.790132
+std                                         14765.319842
+min                                             0.000000
+25\%                                           366.500000
+50\%                                          1021.000000
+75\%                                          3202.000000
+max                                        284377.000000
+
+       Margin of Error- Total- Two or more races!!Two races excluding Some other
+race, and three or more races  \textbackslash{}
+count                                        1439.000000
+mean                                          437.862404
+std                                           546.029008
+min                                             5.000000
+25\%                                           132.500000
+50\%                                           264.000000
+75\%                                           523.000000
+max                                          6490.000000
+
+       Unnamed: 0\_y  Total Population 62 Years and over
+count   1439.000000                        1.439000e+03
+mean    1506.010424                        2.936540e+04
+std      957.648492                        7.306683e+04
+min        0.000000                        2.100000e+02
+25\%      568.000000                        5.357500e+03
+50\%     1467.000000                        1.068600e+04
+75\%     2344.500000                        2.459000e+04
+max     3139.000000                        1.610630e+06
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{State County Counts for Both CFR
+Cohorts}}{State County Counts for Both CFR Cohorts}}\label{state-county-counts-for-both-cfr-cohorts}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}high CFR\PYZpc{} counties in June Counts by State}
+\PY{n}{hicountiesdf} \PY{o}{=} \PY{n}{junhidf}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{state}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{county}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}low CFR\PYZpc{} counties in June Counts by State}
+\PY{n}{locountiesdf} \PY{o}{=} \PY{n}{junlodf}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{state}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{county}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{\texorpdfstring{\textbf{County Counts by Month with CFR
+\textgreater{}=6.25\%}}{County Counts by Month with CFR \textgreater{}=6.25\%}}\label{county-counts-by-month-with-cfr-6.25}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{77}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{filtmarcfr} \PY{o}{=} \PY{n}{topcovcounty331df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mf}{6.25}
+\PY{n}{topcovcounty331df}\PY{p}{[}\PY{n}{filtmarcfr}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{March County Count \PYZgt{}= CFR 7: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{topcovcounty331df}\PY{p}{[}\PY{n}{filtmarcfr}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{n}{filtaprlcfr} \PY{o}{=} \PY{n}{topcovcounty430df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mf}{6.25}
+\PY{n}{topcovcounty430df}\PY{p}{[}\PY{n}{filtaprlcfr}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{April County Count \PYZgt{}= CFR 7: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{topcovcounty430df}\PY{p}{[}\PY{n}{filtaprlcfr}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{n}{filtmaycfr} \PY{o}{=} \PY{n}{topcovcounty531df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mf}{6.25}
+\PY{n}{topcovcounty531df}\PY{p}{[}\PY{n}{filtmaycfr}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{May County Count \PYZgt{}= CFR 7: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{topcovcounty531df}\PY{p}{[}\PY{n}{filtmaycfr}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{n}{filtjuncfr} \PY{o}{=} \PY{n}{topcovcounty614df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CFR(}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mf}{6.25}
+\PY{n}{topcovcounty614df}\PY{p}{[}\PY{n}{filtjuncfr}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{June County Count \PYZgt{}= CFR 7: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{topcovcounty614df}\PY{p}{[}\PY{n}{filtjuncfr}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+March County Count >= CFR 7:  (154, 7)
+April County Count >= CFR 7:  (574, 7)
+May County Count >= CFR 7:  (602, 7)
+June County Count >= CFR 7:  (502, 7)
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
