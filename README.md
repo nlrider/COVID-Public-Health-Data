@@ -7,3 +7,5 @@ United States County Level Data Analysis (Performed on July 6, 2020)
 
 # Data Definition:
 CFR% = (Fatalities Reported/Total Case Count)*100
+
+# Publication:  https://pubmed.ncbi.nlm.nih.gov/33352253/
